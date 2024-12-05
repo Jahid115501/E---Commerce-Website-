@@ -4,46 +4,59 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New User</title>
+        <title>Register</title>
         <%@include file="components/common_css_js.jsp" %>
         <style>
             body {
-                background: linear-gradient(to right, #74ebd5, #9face6);
+                background-color: #fff; /* White background */
                 font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
             }
             .card {
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
                 border-radius: 10px;
                 overflow: hidden;
+                margin-top: 30px;
+                width: 100%;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
             }
             .card-body {
-                padding: 30px;
+                padding: 30px 50px;
                 background-color: #ffffff;
+                min-height: 350px;
             }
             .btn-custom {
                 border: none;
-                padding: 10px 20px;
+                padding: 14px 30px;
                 font-size: 16px;
                 border-radius: 25px;
                 transition: background-color 0.3s ease-in-out;
+                width: 48%;
+                margin: 0;
             }
             .btn-custom.btn-register {
-                background-color: #28a745;
+                background-color: #5890FF;
                 color: #fff;
             }
             .btn-custom.btn-register:hover {
-                background-color: #218838;
+                background-color: #467AD6;
             }
             .btn-custom.btn-reset {
-                background-color: #ffc107;
+                background-color: #5d6d7e;
                 color: #fff;
             }
             .btn-custom.btn-reset:hover {
-                background-color: #e0a800;
+                background-color: #4a5868;
             }
             .form-control {
                 border-radius: 5px;
                 border: 1px solid #ccc;
+                padding: 10px;
+                font-size: 16px;
+                margin-bottom: 20px;
             }
             .form-group label {
                 font-weight: bold;
@@ -52,6 +65,14 @@
             h3 {
                 font-weight: bold;
                 color: #555;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .button-group {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
             }
         </style>
     </head>
@@ -59,34 +80,34 @@
         <%@include file="components/navbar.jsp" %>
         <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="text-center mb-4">Sign Up Here</h3>
+                            <h3>Register</h3>
                             <form action="RegisterServlet" method="post">
                                 <div class="form-group">
-                                    <label for="name">User Name</label>
-                                    <input name="user_name" type="text" class="form-control" id="name" placeholder="Enter your name" aria-describedby="nameHelp">
+                                    <label for="username">Username</label>
+                                    <input name="user_name" type="text" class="form-control" id="username" placeholder="Enter your username" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">User Email</label>
-                                    <input name="user_email" type="email" class="form-control" id="email" placeholder="Enter your email" aria-describedby="emailHelp">
+                                    <label for="email">Email</label>
+                                    <input name="user_email" type="email" class="form-control" id="email" placeholder="Enter your email" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">User Password</label>
-                                    <input name="user_password" type="password" class="form-control" id="password" placeholder="Enter your password">
+                                    <label for="password">Password</label>
+                                    <input name="user_password" type="password" class="form-control" id="password" placeholder="Enter your password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
-                                    <input name="user_phone" type="number" class="form-control" id="phone" placeholder="Enter your phone number">
+                                    <input name="user_phone" type="number" class="form-control" id="phone" placeholder="Enter your phone number" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address">User Address</label>
-                                    <textarea name="user_adderss" id="address" class="form-control" placeholder="Enter your address" style="height: 100px;"></textarea>
+                                    <label for="address">Address</label>
+                                    <textarea name="user_address" id="address" class="form-control" placeholder="Enter your address" style="height: 80px;" required></textarea>
                                 </div>
-                                <div class="text-center mt-4">
-                                    <button type="submit" class="btn btn-custom btn-register">Register</button>
-                                    <button type="reset" class="btn btn-custom btn-reset">Reset</button>
+                                <div class="button-group text-center mt-4">
+                                    <button type="submit" class="btn btn-register btn-custom">Register</button>
+                                    <button type="reset" class="btn btn-reset btn-custom">Reset</button>
                                 </div>
                             </form>
                         </div>

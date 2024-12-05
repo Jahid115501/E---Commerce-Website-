@@ -17,9 +17,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
        <!-- Specify the mapping file -->
-        <mapping class="com.mycompany.ecommercesite.entites.User"/>
-        <mapping class="com.mycompany.ecommercesite.entites.Category"/>
-        <mapping class="com.mycompany.ecommercesite.entites.Product"/>
-        <mapping resource="com/mycompany/e/commerce/entity/Product.hbm.xml"/>     
+        <mapping class="com.mycompany.e.commercesite.entites.User"/>
+        <mapping class="com.mycompany.e.commercesite.entites.Category"/>
+        <mapping class="com.mycompany.e.commercesite.entites.Product"/>    
     </session-factory>
 </hibernate-configuration>

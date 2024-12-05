@@ -17,15 +17,28 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            // Fetch form data
+
+            // Fetching form data
             String userName = request.getParameter("user_name");
             String userEmail = request.getParameter("user_email");
             String userPassword = request.getParameter("user_password");
             String userPhone = request.getParameter("user_phone");
             String userAddress = request.getParameter("user_address");
 
+            // Debugging: Print form data to check
+            System.out.println("Debug: Received form data");
+            System.out.println("User Name: " + userName);
+            System.out.println("User Email: " + userEmail);
+            System.out.println("User Password: " + userPassword);
+            System.out.println("User Phone: " + userPhone);
+            System.out.println("User Address: " + userAddress);
+
             // Validate form data
-            if (userName.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || userPhone.isEmpty() || userAddress.isEmpty()) {
+            if (userName == null || userName.isEmpty() ||
+                userEmail == null || userEmail.isEmpty() ||
+                userPassword == null || userPassword.isEmpty() ||
+                userPhone == null || userPhone.isEmpty() ||
+                userAddress == null || userAddress.isEmpty()) {
                 out.println("<h3 style='color:red;'>All fields are required!</h3>");
                 return;
             }
@@ -38,15 +51,18 @@ public class RegisterServlet extends HttpServlet {
                 Session session = FactoryProvider.getFactory().openSession();
                 Transaction tx = session.beginTransaction();
 
-                session.save(user);
-
+                int userId = (int) session.save(user); // Save user and get the generated ID
                 tx.commit();
                 session.close();
 
+                // Success response
                 out.println("<h3 style='color:green;'>Registration Successful!</h3>");
+                out.println("<br> Your User ID is: " + userId);
+
             } catch (Exception e) {
+                // Handle exception and print error details
                 e.printStackTrace();
-                out.println("<h3 style='color:red;'>An error occurred while registering. Please try again later.</h3>");
+                out.println("<h3 style='color:red;'>An error occurred: " + e.getMessage() + "</h3>");
             }
         }
     }
