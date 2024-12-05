@@ -7,13 +7,21 @@ public class FactoryProvider {
     private static SessionFactory factory;
 
     public static SessionFactory getFactory() {
-        try {
-            if (factory == null) {
+        if (factory == null) {
+            try {
                 factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            } catch (Exception e) {
+                System.err.println("Error creating SessionFactory");
+                e.printStackTrace();
+                throw new RuntimeException("Failed to initialize Hibernate SessionFactory", e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return factory;
+    }
+
+    public static void closeFactory() {
+        if (factory != null) {
+            factory.close();
+        }
     }
 }

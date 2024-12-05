@@ -13,8 +13,8 @@
         <!-- Hibernate properties -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
        <!-- Specify the mapping file -->
         <mapping class="com.mycompany.ecommercesite.entites.User"/>

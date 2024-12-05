@@ -5,16 +5,16 @@
         <servlet-class>com.mycompany.e.commercesite.servlet.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>RegsisterServlets</servlet-name>
-        <servlet-class>com.mycompany.e.commercesite.servlet.RegisterServlet</servlet-class>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.mycompany.e.commercesite.servlet.CartServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RegsisterServlets</servlet-name>
-        <url-pattern>/RegsisterServlets</url-pattern>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/CartServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
