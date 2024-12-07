@@ -38,13 +38,19 @@ public class LoginServlet extends HttpServlet {
         
         // Check if user exists
         if (user != null) {
-            // User is valid, create session and redirect to dashboard or home page
+            // User is valid, create session
             HttpSession session = request.getSession();
-            session.setAttribute("user", user); // Store user object in session
-            response.sendRedirect("index.jsp"); // Redirect to dashboard or home page
+            session.setAttribute("current-user", user); // Store user object in session
+            
+            // Redirect based on user type
+            if ("admin".equals(user.getUserType())) {
+                response.sendRedirect("admin.jsp"); // Redirect to admin page
+            } else {
+                response.sendRedirect("index.jsp"); // Redirect to user home page
+            }
         } else {
             // Invalid login attempt, show error message on the login page
-            request.setAttribute("errorMessage", "Invalid email or password! Please try again.");
+            request.setAttribute("message", "Invalid email or password! Please try again.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

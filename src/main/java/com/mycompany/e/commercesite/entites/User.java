@@ -1,42 +1,44 @@
 package com.mycompany.e.commercesite.entites;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity 
+@Entity
 @Table(name = "users")
 public class User {
-    
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 10, name = "user_id")
     private int userId;
-    
-    @Column(length = 100, name = "user_name")
+
+    @Column(length = 100, name = "user_name", nullable = false)
     private String userName;
-    
-    @Column(length = 100, name = "user_email")
+
+    @Column(length = 100, name = "user_email", unique = true, nullable = false)
     private String userEmail;
-    
-    @Column(length = 100, name = "user_password")
+
+    @Column(length = 100, name = "user_password", nullable = false)
     private String userPassword;
-    
-    @Column(length = 15, name = "user_phone")
+
+    @Column(length = 15, name = "user_phone", nullable = false)
     private String userPhone;
-    
-    @Column(length = 1500, name = "user_pic")
+
+    @Column(length = 255, name = "user_pic")
     private String userPic;
-    
-    @Column(length = 1500, name = "user_address")
+
+    @Column(length = 500, name = "user_address", nullable = false)
     private String userAddress;
-    
-    
-    // 1. All-args Constructor (Optional, including ID)
-    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress) {
+
+    @Column(name = "user_type", nullable = false)
+    private String userType; // Default value: "normal"
+
+    // Default Constructor
+    public User() {
+        this.userType = "normal"; // Default userType
+    }
+
+    // All-args Constructor (including ID)
+    public User(int userId, String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -44,25 +46,20 @@ public class User {
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userType = userType;
     }
 
-    // 2. Parameterized Constructor
-    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress) {
+    // Parameterized Constructor (without ID)
+    public User(String userName, String userEmail, String userPassword, String userPhone, String userPic, String userAddress, String userType) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userPic = userPic;
         this.userAddress = userAddress;
+        this.userType = userType;
     }
 
-  
-      // 3. Default Constructor
-    public User() {
-        // Hibernate requires a default constructor.
-    }
-
-    
     // Getters and Setters
     public int getUserId() {
         return userId;
@@ -119,5 +116,23 @@ public class User {
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
     }
-    
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    // toString Method for Debugging
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userType='" + userType + '\'' +
+                '}';
+    }
 }

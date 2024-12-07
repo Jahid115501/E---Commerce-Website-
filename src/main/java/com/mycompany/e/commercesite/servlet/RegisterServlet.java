@@ -43,8 +43,11 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
 
+            // Set default userType as "normal"
+            String userType = "normal";
+
             // Create User object
-            User user = new User(userName, userEmail, userPassword, userPhone, "default.jpg", userAddress);
+            User user = new User(userName, userEmail, userPassword, userPhone, "default.jpg", userAddress, userType);
 
             // Hibernate: Save user to the database
             try {
