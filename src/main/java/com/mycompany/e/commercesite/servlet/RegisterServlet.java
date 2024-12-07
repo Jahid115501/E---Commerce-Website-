@@ -56,8 +56,8 @@ public class RegisterServlet extends HttpServlet {
                 session.close();
 
                 // Success response
-                out.println("<h3 style='color:green;'>Registration Successful!</h3>");
-                out.println("<br> Your User ID is: " + userId);
+                request.setAttribute("message", "Registration Successful! Your User ID is: " + userId);
+                request.getRequestDispatcher("message.jsp").forward(request, response);
 
             } catch (Exception e) {
                 // Handle exception and print error details
