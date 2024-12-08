@@ -1,3 +1,8 @@
+<%@page import="com.mycompany.e.commercesite.entites.User"%>
+<%
+    User user1 = (User)session.getAttribute("current-user");
+%>
+
 <nav class="navbar navbar-expand-lg navbar-dark custom-bg">
     <div class="container">
         <!-- Brand Name -->
@@ -34,36 +39,72 @@
 
             <!-- Right Side Links -->
             <ul class="navbar-nav ml-auto">
-                
-                
-                <!-- Cart -->
-                <li class="nav-item">
-                    <a class="nav-link" href="cart.jsp">
-                        <i class="fa fa-shopping-cart"></i> Cart
-                    </a>
-                </li>
-
-                <!-- Login/Register -->
-                <%-- Dynamic Login/Register Links --%>
-                <%
-                    if (session != null && session.getAttribute("currentUser") != null) {
+                <% 
+                    if (user1 == null) {
                 %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.jsp">Logout</a>
-                    </li>
-                <%
-                    } else {
-                %>
+                    <!-- Login and Register Links for non-logged-in users -->
                     <li class="nav-item">
                         <a class="nav-link" href="login.jsp">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="register.jsp">Register</a>
                     </li>
-                <%
+                <% 
+                    } else {
+                %>
+                    <!-- Display username and Logout link for logged-in users -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><%= user1.getUserName() %></a> <!-- Show only username -->
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="LogoutServlet">Logout</a>
+                    </li>
+                <% 
                     }
                 %>
             </ul>
         </div>
     </div>
 </nav>
+
+<style>
+    .navbar {
+        font-family: 'Arial', sans-serif;
+    }
+
+    .navbar-nav .nav-link {
+        color: #fff !important;
+        font-size: 14px; /* Smaller font size */
+        text-transform: uppercase;
+        padding: 8px 12px; /* Adjusted padding */
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #f39c12 !important; /* Hover color for links */
+    }
+
+    .navbar-nav .nav-item {
+        margin-right: 10px;
+    }
+
+    .dropdown-menu {
+        background-color: #333;
+        border: none;
+    }
+
+    .dropdown-item {
+        color: #fff;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f39c12;
+    }
+
+    .navbar-toggler {
+        border-color: #fff;
+    }
+
+    .navbar-toggler-icon {
+        background-color: #fff;
+    }
+</style>
