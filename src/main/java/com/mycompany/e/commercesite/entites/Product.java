@@ -109,6 +109,22 @@ public class Product {
        this.category = category;
    }
     
-    
-    
+    @Override
+public String toString() {
+    return "Product{" +
+           "pId=" + pId +
+           ", pName='" + pName + '\'' +
+           ", pDescp='" + pDescp + '\'' +
+           ", pPhoto='" + pPhoto + '\'' +
+           ", pPrice=" + pPrice +
+           ", pDiscount=" + pDiscount +
+           ", pQuantity=" + pQuantity +
+           ", category=" + (category != null ? category.getCategoryTitle() : "null") +
+           '}';
+}
+
+public int getPriceAfterApplyingDiscount(){
+    int d=(int)((this.getpDiscount()/100.0)*this.getpPrice());
+    return this.getpPrice() - d;
+}
 }

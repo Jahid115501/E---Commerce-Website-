@@ -1,3 +1,10 @@
+<%@page import="com.mycompany.e.commercesite.helper.Helper"%>
+<%@page import="com.mycompany.e.commercesite.entites.Category"%>
+<%@page import="com.mycompany.e.commercesite.dao.CategoryDao"%>
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.e.commercesite.entites.Product"%>
+<%@page import="com.mycompany.e.commercesite.dao.ProductDao"%>
+<%@page import="com.mycompany.e.commercesite.helper.FactoryProvider"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,154 +16,214 @@
     <%@ include file="components/common_css_js.jsp" %> <!-- Common CSS & JS -->
 
     <style>
-        /* Navbar Adjustments */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
         .navbar {
-            margin-bottom: 0;
-        }
-
-        /* Search Bar Style */
-        .search-bar-container {
-            background-color: #f4f4f4;
-            padding: 10px;
-            text-align: center;
-        }
-        .search-bar {
-            width: 60%;
-            padding: 12px;
-            margin: 0 auto;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 18px;
-        }
-
-        /* Product Section */
-        .products-section {
-            padding: 40px 20px;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             background-color: #fff;
+            border-bottom: 1px solid #ddd;
         }
-        .product-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin: 15px;
-            padding: 15px;
-            background: #fff;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
-        .product-card:hover {
-            transform: translateY(-10px);
-        }
-        .product-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        .product-title {
-            font-size: 18px;
+
+        .navbar-brand {
             font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .list-group-item {
+            font-size: 1.1rem;
+        }
+
+        .card {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+            height: 100%;  /* Ensures uniform height for each card */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-img-top {
+            height: 180px;  /* Uniform image size */
+            object-fit: cover;
+        }
+
+        .card-body {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+        }
+
+        .search-bar {
             margin-top: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .product-price {
-            color: #1976D2;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-        .btn-view {
-            background-color: #1976D2;
-            color: #fff;
-            padding: 10px 20px;
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px;
+            font-size: 0.9rem;
             border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
+            border: 1px solid #ddd;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            padding: 8px 10px;  /* Smaller padding for buttons */
+            font-size: 0.85rem;  /* Smaller font for buttons */
+            width: 48%;  /* Adjusted width */
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .discount-label {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        /* Grid adjustments */
+        .card-columns {
+            column-count: 4;
+            column-gap: 15px;
+            margin-bottom: 20px;  /* Spacing between product rows */
+        }
+
+        @media (max-width: 768px) {
+            .card-columns {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-columns {
+                column-count: 1;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+            
+            .btn-custom {
+                width: 100%;
+            }
+        }
+
+        .card-footer .btn {
+            margin: 5px 0; /* Spacing between the buttons */
         }
     </style>
 </head>
 <body>
     <%@ include file="components/navbar.jsp" %> <!-- Include Navbar -->
+    
+    <div class="container-fluid"> 
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form action="index.jsp" method="get">
+                <input type="text" name="search" placeholder="Search for products..." class="form-control" />
+            </form>
+        </div>
 
-    <!-- Search Bar Section -->
-    <div class="search-bar-container">
-        <input type="text" class="search-bar" placeholder="Search for products...">
-    </div>
+        <div class="row mt-3">
+            <%
+                String cat = request.getParameter("category");
+                String search = request.getParameter("search");
+                ProductDao dao = new ProductDao(FactoryProvider.getFactory());
+                List<Product> list = null;
 
-    <!-- Featured Products -->
-    <div class="products-section">
-        <h2 style="text-align: center; margin-bottom: 20px;">Featured Products</h2>
-        <div class="container">
-            <div class="row">
-                <!-- Product 1 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product1.jpg" alt="Product 1">
-                        <div class="product-title">Smartphone</div>
-                        <div class="product-price">29000TK</div>
-                        <a href="product_details.jsp?id=1" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 2 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product2.jpg" alt="Product 2">
-                        <div class="product-title">Laptop</div>
-                        <div class="product-price">78000TK</div>
-                        <a href="product_details.jsp?id=2" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 3 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product3.jpg" alt="Product 3">
-                        <div class="product-title">Headphones</div>
-                        <div class="product-price">1700TK</div>
-                        <a href="product_details.jsp?id=3" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 4 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product4.jpg" alt="Product 4">
-                        <div class="product-title">Smart Watch</div>
-                        <div class="product-price">3000TK</div>
-                        <a href="product_details.jsp?id=4" class="btn-view">View Details</a>
-                    </div>
+                if (cat == null || cat.trim().isEmpty()) {
+                    cat = "all"; 
+                }
+
+                if (cat.trim().equals("all")) {
+                    list = dao.getAllProducts();
+                } else {
+                    try {
+                        int cid = Integer.parseInt(cat.trim());
+                        list = dao.getAllProductsById(cid);
+                    } catch (NumberFormatException e) {
+                        out.println("<div class='alert alert-danger'>Invalid category ID</div>");
+                    }
+                }
+                
+                CategoryDao cdao = new CategoryDao(FactoryProvider.getFactory());
+                List<Category> clist = cdao.getCategories();
+            %>
+
+            <div class="col-md-2">
+                <div class="list-group mt-4">
+                    <a href="index.jsp?category=all" class="list-group-item list-group-item-action active">
+                        All Products
+                    </a>
+
+                    <% for (Category c : clist) { %>
+                        <a href="index.jsp?category=<%= c.getCategoryId() %>" class="list-group-item list-group-item-action">
+                            <%= c.getCategoryTitle() %>
+                        </a>
+                    <% } %>
                 </div>
             </div>
-            <div class="row">
-                <!-- Product 5 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product5.jpg" alt="Product 5">
-                        <div class="product-title">Gaming Console</div>
-                        <div class="product-price">17000TK</div>
-                        <a href="product_details.jsp?id=5" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 6 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product6.jpg" alt="Product 6">
-                        <div class="product-title">Camera</div>
-                        <div class="product-price">30000TK</div>
-                        <a href="product_details.jsp?id=6" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 7 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product7.jpg" alt="Product 7">
-                        <div class="product-title">Bluetooth Speaker</div>
-                        <div class="product-price">4900TK</div>
-                        <a href="product_details.jsp?id=7" class="btn-view">View Details</a>
-                    </div>
-                </div>
-                <!-- Product 8 -->
-                <div class="col-md-3">
-                    <div class="product-card">
-                        <img src="images/product8.jpg" alt="Product 8">
-                        <div class="product-title">Tablet</div>
-                        <div class="product-price">3000TK</div>
-                        <a href="product_details.jsp?id=8" class="btn-view">View Details</a>
+        
+            <div class="col-md-10">
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card-columns">
+                            <% 
+                                for (Product p : list) {
+                            %>
+                                <!-- Product Card -->
+                                <div class="card">
+                                    <div class="container text-center">
+                                        <img class="card-img-top mt-2" src="img/products/<%= p.getpPhoto() %>" alt="Product Image">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= p.getpName() %></h5>
+                                        <p class="card-text">
+                                            <%= Helper.get10Words(p.getpDescp()) %>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-custom">Add to Cart</button>
+                                        <button class="btn btn-outline-primary">
+                                            &#2547;<%= p.getPriceAfterApplyingDiscount() %>/- 
+                                            <span class="text-secondary discount-label">
+                                                &#2547; <%= p.getpPrice() %>, <%= p.getpDiscount() %>% off
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            <% 
+                                }
+
+                                if (list.size() == 0) {
+                                    out.println("<h3>No item in this category</h3>");
+                                }
+                            %>
+                        </div>
                     </div>
                 </div>
             </div>
