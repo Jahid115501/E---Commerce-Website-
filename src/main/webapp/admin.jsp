@@ -206,7 +206,7 @@
                     </div>
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <form action="ProductOperationServlet" method="POST">
+                        <form action="ProductOperationServlet" method="POST" enctype="multipart/form-data">
 
                             <input type="hidden" name="operation" value="addproduct">
                             <div class="form-group">
@@ -230,7 +230,7 @@
 
                             <div class="form-group">
 
-                                <input type="number" name="pQuantity" class="form-control"  placeholder="Enter product discount" required>
+                                <input type="number" name="pQuantity" class="form-control"  placeholder="Enter product Quantity" required>
                             </div>
 
                             <%         
@@ -244,8 +244,8 @@
 
 
                             <div class="form-group">
-                                <label for="productCategory">Product Category</label>
-                                <select class="form-control" name="catId" id="pCategory" required>
+                                <label for="catId">Product Category</label>
+                                <select class="form-control" name="catId" id="catId" required>
                                     
                                     <%
                                       for(Category c:list){
