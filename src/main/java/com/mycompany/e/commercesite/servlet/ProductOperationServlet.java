@@ -5,7 +5,10 @@ import com.mycompany.e.commercesite.dao.ProductDao;
 import com.mycompany.e.commercesite.entites.Category;
 import com.mycompany.e.commercesite.entites.Product;
 import com.mycompany.e.commercesite.helper.FactoryProvider;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -76,10 +79,33 @@ public class ProductOperationServlet extends HttpServlet {
                
                //product save...
                 ProductDao pdao =new ProductDao(FactoryProvider.getFactory());
-                pdao.saveProduct(p);
-                out.println("Product saved");
+               pdao.saveProduct(p);
+               
+               
+               String path = request.getRealPath("img") + File.separator +"products"+File.separator+part.getSubmittedFileName();
+                System.out.println(path);
+                
+              try{
+                FileOutputStream fos = new FileOutputStream(path);
+                
+                InputStream is = part.getInputStream();
                 
                 
+                byte []data = new byte[is.available()];
+                
+                is.read(data);
+                
+                fos.write(data);
+                fos.close();
+                
+              }catch(Exception e){
+                  e.printStackTrace();
+              }
+               // Set success message in request
+                 request.setAttribute("successMessage", "Product Saved Successfully!");
+    
+               // Redirect back to the Admin page where the message will be displayed
+                 request.getRequestDispatcher("message_cat.jsp").forward(request, response);
                 
                 
             }
