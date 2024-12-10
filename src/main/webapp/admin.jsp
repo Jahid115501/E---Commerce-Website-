@@ -1,3 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.e.commercesite.entites.Category"%>
+<%@page import="com.mycompany.e.commercesite.helper.FactoryProvider"%>
+<%@page import="com.mycompany.e.commercesite.dao.CategoryDao"%>
 <%@page import="com.mycompany.e.commercesite.entites.User"%>
 <%
     User user = (User) session.getAttribute("current-user");
@@ -139,7 +143,7 @@
 
                 <!-- View Orders -->
                 <div class="col-md-4">
-                    <div class="card text-center" onclick="location.href='viewOrders.jsp';">
+                    <div class="card text-center" onclick="location.href = 'viewOrders.jsp';">
                         <div class="card-body">
                             <img src="img/diagram.png" alt="View Orders" class="img-fluid" style="max-width: 100px;">
                             <p class="mt-2">Click here to view orders</p>
@@ -164,17 +168,16 @@
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <form action="ProductOperationServlet" method="POST">
-                            
-                            <input type="hidden" name="operatin" value="addcategoy"> 
+
+                            <input type="hidden" name="operation" value="addcategory">
                             <div class="form-group">
-                                <label for="categoryName">Category Name</label>
-                                <input type="text" name="categoryName" class="form-control" id="catTitle" placeholder="Enter category title" required>
+                               
+                                <input type="text" name="categoryTitle" class="form-control"  placeholder="Enter category title" required>
                             </div>
                             <div class="form-group">
-                                <label for="categoryDescription">Category Description</label>
-                                <textarea name="categoryDescription" class="form-control" id="catDescription" rows="3" placeholder="Enter category description" required></textarea>
+                                <textarea name="categoryDescription" class="form-control" rows="3" placeholder="Enter category description" required></textarea>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-primary">Add Category</button>
                         </form>
                     </div>
@@ -185,6 +188,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
 
         <!-- Add Product Modal -->
         <div class="modal fade" id="add-product-modal" tabindex="-1" role="dialog" aria-labelledby="addProductLabel" aria-hidden="true">
@@ -200,31 +207,65 @@
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <form action="ProductOperationServlet" method="POST">
-                            
-                            <input type="hidden" name="operatin" value="addproduct">
+
+                            <input type="hidden" name="operation" value="addproduct">
                             <div class="form-group">
-                                <label for="productName">Product Name</label>
-                                <input type="text" name="productName" class="form-control" id="productName" placeholder="Enter product name" required>
+                                <input type="text" name="pName" class="form-control" placeholder="Enter product name" required>
                             </div>
+
                             <div class="form-group">
-                                <label for="productDescription">Product Description</label>
-                                <textarea name="productDescription" class="form-control" id="productDescription" rows="3" placeholder="Enter product description" required></textarea>
+                                <textarea name="pDescp" class="form-control" rows="3" placeholder="Enter product description" required></textarea>
                             </div>
+
+
+
                             <div class="form-group">
-                                <label for="productImage">Product Image</label>
-                                <input type="file" name="productImage" class="form-control-file" id="productImage">
+                                <input type="number" name="pPrice" class="form-control" placeholder="Enter product price" required>
                             </div>
+
+
                             <div class="form-group">
-                                <label for="productPrice">Product Price</label>
-                                <input type="number" name="productPrice" class="form-control" id="productPrice" placeholder="Enter product price" required>
+                                <input type="number" name="pDiscount" class="form-control"  placeholder="Enter product discount" required>
                             </div>
+
+                            <div class="form-group">
+
+                                <input type="number" name="pQuantity" class="form-control"  placeholder="Enter product discount" required>
+                            </div>
+
+                            <%         
+                                CategoryDao cdao = new CategoryDao(FactoryProvider.getFactory());
+                                List<Category> list=cdao.getCategories();
+
+
+
+                            %>
+
+
+
                             <div class="form-group">
                                 <label for="productCategory">Product Category</label>
-                                <select class="form-control" name="productCategory" id="productCategory" required>
-                                    <option value="1">Category 1</option>
-                                    <option value="2">Category 2</option>
+                                <select class="form-control" name="catId" id="pCategory" required>
+                                    
+                                    <%
+                                      for(Category c:list){
+
+                                    
+                                    %>
+                                    
+                                  <option value="<%= c.getCategoryId() %>"><%= c.getCategoryTitle() %></option>
+
+                                    
+                                    <% }  %>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="pPhoto">Product Image</label>
+                                <input type="file" name="pPhoto" class="form-control-file" id="pPhoto" required />
+                            </div>
+
+
                             <button type="submit" class="btn btn-primary">Add Product</button>
                         </form>
                     </div>

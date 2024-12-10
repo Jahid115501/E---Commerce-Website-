@@ -1,4 +1,3 @@
-
 package com.mycompany.e.commercesite.servlet;
 
 import com.mycompany.e.commercesite.dao.CategoryDao;
@@ -22,10 +21,10 @@ public class ProductOperationServlet extends HttpServlet {
             
             String op = request.getParameter("operation");
             
-            if (op.trim().equals("addcategoy")) {
+            if (op.trim().equals("addcategory")) {
                 
-                String title = request.getParameter("catTitle");
-                String description = request.getParameter("catDescription");
+                String title = request.getParameter("categoryTitle");
+                String description = request.getParameter("categoryDescription");
                 
                 Category category = new Category();
                 category.setCategoryTitle(title);
@@ -33,7 +32,7 @@ public class ProductOperationServlet extends HttpServlet {
                 
                 
                 //category save in database
-               CategoryDao categoryDao = new CategoryDao(FactoryProvider.getFactory);
+               CategoryDao categoryDao = new CategoryDao(FactoryProvider.getFactory());
                int catId = categoryDao.saveCategory(category);
                out.println("Saved");
                 
