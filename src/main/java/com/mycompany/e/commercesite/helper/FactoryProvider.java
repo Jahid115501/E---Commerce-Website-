@@ -5,6 +5,7 @@ import org.hibernate.cfg.Configuration;
 
 public class FactoryProvider {
     private static SessionFactory factory;
+    public static SessionFactory getFactory;
 
     public static SessionFactory getFactory() {
         if (factory == null) {

@@ -163,19 +163,18 @@
                     </div>
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <form action="AddCategoryServlet" method="POST" enctype="multipart/form-data">
+                        <form action="ProductOperationServlet" method="POST">
+                            
+                            <input type="hidden" name="operatin" value="addcategoy"> 
                             <div class="form-group">
                                 <label for="categoryName">Category Name</label>
-                                <input type="text" name="categoryName" class="form-control" id="categoryName" placeholder="Enter category name" required>
+                                <input type="text" name="categoryName" class="form-control" id="catTitle" placeholder="Enter category title" required>
                             </div>
                             <div class="form-group">
                                 <label for="categoryDescription">Category Description</label>
-                                <textarea name="categoryDescription" class="form-control" id="categoryDescription" rows="3" placeholder="Enter category description" required></textarea>
+                                <textarea name="categoryDescription" class="form-control" id="catDescription" rows="3" placeholder="Enter category description" required></textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="categoryImage">Category Image</label>
-                                <input type="file" name="categoryImage" class="form-control-file" id="categoryImage">
-                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Add Category</button>
                         </form>
                     </div>
@@ -200,7 +199,9 @@
                     </div>
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <form action="AddProductServlet" method="POST" enctype="multipart/form-data">
+                        <form action="ProductOperationServlet" method="POST">
+                            
+                            <input type="hidden" name="operatin" value="addproduct">
                             <div class="form-group">
                                 <label for="productName">Product Name</label>
                                 <input type="text" name="productName" class="form-control" id="productName" placeholder="Enter product name" required>
